@@ -11,11 +11,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #e1a567;
 }
 
 /* Add this to apply background color changes */
 body.dark {
-  background-color: #121212; /* Dark background color */
+  background-color: #a16722; /* Dark background color */
   color: white; /* Light text color */
 }
 

@@ -1,4 +1,6 @@
 import React, { useState } from 'react'; // Importing necessary hooks from React
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faUndo, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function TodoItem({ text, onDelete, onToggleComplete, onEdit, isCompleted, darkMode, dueDate, priority }) {
   // State to track if the item is being edited
@@ -14,7 +16,7 @@ function TodoItem({ text, onDelete, onToggleComplete, onEdit, isCompleted, darkM
   };
 
   return (
-    <div className={`flex justify-between items-center p-4 border rounded-lg ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-black'}`}>
+    <div className={`flex justify-between items-center p-4 border rounded-lg ${darkMode ? 'bg-white opacity-35 text-black' : 'bg-white opacity-50 text-black'}`}>
       {/* Container for the todo item with conditional styling based on darkMode prop */}
 
       {isEditing ? (
@@ -22,7 +24,7 @@ function TodoItem({ text, onDelete, onToggleComplete, onEdit, isCompleted, darkM
         <input
           type="text"
           value={editText} // Controlled component tied to editText state
-          className={`flex-grow p-2 ${darkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'}`} // Conditional styling based on darkMode
+          className={`flex-grow p-2 ${darkMode ? 'bg-white opacity-35 text-black' : 'bg-white opacity-50 text-black'}`} // Conditional styling based on darkMode
           onChange={(e) => setEditText(e.target.value)} // Update editText state on change
           onBlur={handleEdit} // Save changes when the input loses focus
           onKeyPress={(e) => {
@@ -31,11 +33,11 @@ function TodoItem({ text, onDelete, onToggleComplete, onEdit, isCompleted, darkM
         />
       ) : (
         // If the item is not in editing mode, render the todo text
-        <div className={`flex-grow ${isCompleted ? 'line-through text-gray-500' : ''}`} onDoubleClick={() => setIsEditing(true)}>
+        <div className={`felx flex-row md:flex-col ${isCompleted ? 'line-through text-black' : ''}`} onDoubleClick={() => setIsEditing(true)}>
           {/* Apply line-through style if the item is completed */}
           <span>{text}</span> {/* Display the text of the todo item */}
-          <span className="ml-2 text-sm">{dueDate}</span> {/* Display the due date */}
-          <span className="ml-2 text-sm">Priority: {priority}</span> {/* Display the priority */}
+          <span className="ml-6 text-sm">{dueDate}</span> {/* Display the due date */}
+          <span className="ml-6 text-sm">Priority: {priority}</span> {/* Display the priority */}
         </div>
       )}
 
@@ -43,17 +45,17 @@ function TodoItem({ text, onDelete, onToggleComplete, onEdit, isCompleted, darkM
         {/* Container for the action buttons */}
         
         <button
-          className={`mr-2 p-2 rounded ${isCompleted ? 'bg-yellow-500' : 'bg-green-500'} text-white hover:bg-green-600`}
+          className={`mr-2 p-2 rounded text-2xl ${isCompleted ? 'text-yellow-500' : 'text-green-500'}`}
           onClick={onToggleComplete}>
+          <FontAwesomeIcon icon={isCompleted ? faUndo : faCheck} className="mr-2" />
           {/* Button to toggle completion status */}
-          {isCompleted ? 'Undo' : 'Complete'} {/* Display 'Undo' if completed, otherwise 'Complete' */}
         </button>
 
         <button
-          className="bg-red-500 text-white p-2 rounded hover:bg-red-600"
+          className="text-red-500 text-2xl p-2 rounded"
           onClick={onDelete}>
+          <FontAwesomeIcon className="mr-2" icon={faTrash}/>
           {/* Button to delete the todo item */}
-          Delete
         </button>
       </div>
     </div>

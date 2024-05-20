@@ -3,6 +3,8 @@ import TodoItem from './TodoItem'; // Importing the TodoItem component for indiv
 import { TransitionGroup, CSSTransition } from 'react-transition-group'; // Importing components for handling transitions and animations
 import '../index'; // Importing base styles for the component
 import '../animations.css'; // Importing CSS for animations
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 
 function TodoList() {
   // State for managing the list of todos, initialized from local storage if available, otherwise as an empty array
@@ -99,15 +101,23 @@ function TodoList() {
   });
 
   return (
-    <div className={`max-w-2xl mx-auto my-[20px] p-6 border rounded-lg shadow-lg ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'} transition-colors duration-300`}>
+    <div className={`max-w-2xl  mx-10 md:mx-auto  my-[20px] p-6 border rounded-lg shadow-lg ${darkMode ? 'bg-darkBrown opacity-95 text-white' : 'bg-lightBrown text-black'} transition-colors duration-300`}>
       {/* Container for the todo list, with dynamic classes for dark mode */}
-      <h2 className="text-center text-2xl font-bold mb-6">Todo List</h2>
-      {/* Heading for the todo list */}
+
+      <div className='flex justify-between items-baseline mb-2'>
+        <h2 className="text-center text-2xl font-bold mb-6">Todo List</h2>
+        {/* Heading for the todo list */}
+
+        <button className={`mb-2 p-3 text-2xl rounded ${darkMode ? ' text-white' : ' text-black'}`}
+         onClick={toggleDarkMode}>
+          <FontAwesomeIcon icon={darkMode ? faSun : faMoon} className="mr-2" />
+        </button>
+      </div>
 
       <input
         type="text"
         value={input}
-        className={`w-full p-3 border rounded mb-4 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}
+        className={`w-full p-3 border rounded mb-4 ${darkMode ? 'bg-white opacity-35 text-black' : 'bg-white opacity-50 text-black'}`}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Add a new todo..."
       />
@@ -116,22 +126,31 @@ function TodoList() {
       <input
         type="date"
         value={dueDate}
-        className={`w-full p-3 border rounded mb-4 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}
+        className={`w-full p-3 border rounded mb-4 ${darkMode ? 'bg-white opacity-35 text-black' : 'bg-white opacity-50 text-black'}`}
         onChange={(e) => setDueDate(e.target.value)}
+        min={new Date().toISOString().split('T')[0]} // Set the min attribute to today's date
       />
+
       {/* Input field for entering due date */}
 
       <input
         type="number"
         value={priority}
-        className={`w-full p-3 border rounded mb-4 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}
-        onChange={(e) => setPriority(e.target.value)}
+        className={`w-full p-3 border rounded mb-4 ${darkMode ? 'bg-white opacity-35 text-black' : 'bg-white opacity-50 text-black'}`}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value === '' || (Number(value) >= 1 && Number(value) <= 5)) {
+            setPriority(value);
+          }
+        }}
         placeholder="Priority (1-5)"
+        min="1"
+        max="5"
       />
       {/* Input field for entering priority */}
 
       <button
-        className={`w-full p-3 mb-6 ${darkMode ? 'bg-green-700' : 'bg-green-500'} text-white rounded hover:bg-green-600`}
+        className={`w-full p-3 mb-6 ${darkMode ? 'bg-darkbg' : 'bg-lightbg'} text-white rounded hover:bg-white hover:opacity-50 hover:text-black`}
         onClick={addTodo}>
         Add Todo
       </button>
@@ -180,11 +199,6 @@ function TodoList() {
           </CSSTransition>
         ))}
       </TransitionGroup>
-
-      <button className="mt-6 mb-2 p-3 bg-gray-500 text-white rounded" onClick={toggleDarkMode}>
-        {darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-      </button>
-      {/* Button to toggle between dark and light modes */}
     </div>
   );
 }
